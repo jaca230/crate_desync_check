@@ -1,0 +1,54 @@
+# ignore input or output files
+*.root*
+*.mid*
+
+# Ignore compiled files and executables
+*.o
+*.out
+*.app
+*.exe
+
+# Ignore build and output directories
+/build/
+/bin/
+/Debug/
+/Release/
+/logs
+/deprecated/
+
+# Ignore generated files
+CMakeFiles/
+CMakeScripts/
+CMakeCache.txt
+CMakeCache.txt.lock
+compile_commands.json
+
+# Ignore IDE-specific files and directories
+.idea/
+.vscode/
+*.suo
+*.user
+*.sln
+*.sdf
+
+# Ignore text editor backup files
+*~
+*.swp
+*.tmp
+
+# Ignore system and OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependencies and installed packages
+/lib/
+/vendor/
+/packages/
+
+#Ignore custom files
+midas_publisher.log
+publisher
+example_receiver/example_receiver
+example/example_receiver
+scripts/environment/environment_variables.txt
+

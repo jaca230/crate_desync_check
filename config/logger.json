@@ -1,0 +1,19 @@
+{
+  "logger": {
+    "name": "Midas_Event_Unpacker_Logger",
+    "level": "info",
+    "pattern": "[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] %v",
+    "sinks": {
+      "console": {
+        "enabled": true,
+        "color": true
+      },
+      "file": {
+        "enabled": false,
+        "filename": "logs/app.log",
+        "max_size": 10485760,
+        "max_files": 3
+      }
+    }
+  }
+}

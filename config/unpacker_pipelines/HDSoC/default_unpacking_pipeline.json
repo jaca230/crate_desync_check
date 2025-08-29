@@ -1,0 +1,46 @@
+{
+  "plugin_libraries": [
+    "build/lib/libmidas_event_unpacker_plugin.so",
+    "build/lib/libunpacker_data_products_core.so",
+    "build/lib/libunpacker_data_products_nalu.so",
+    "build/lib/libunpacker_stages_core.so",
+    "build/lib/libunpacker_stages_nalu.so"
+  ],
+  "pipeline": [
+    {
+      "id": "event_to_byte_stream",
+      "type": "MidasEventToByteStreamStage",
+      "parameters": {
+        "metadata_product_name": "event_metadata",
+        "bank_product_name_prefix": "bytestream_bank_"
+      },
+      "next": ["unpack_AD00", "unpack_AT00"]
+    },
+    {
+      "id": "unpack_AD00",
+      "type": "ByteStreamToNaluEventStage",
+      "parameters": {
+        "input_byte_stream_product_name": "bytestream_bank_AD%0",
+        "output_product_name": "NaluEvent"
+      },
+      "next": ["cleanup_bytestream"]
+    },
+    {
+      "id": "unpack_AT00",
+      "type": "ByteStreamToNaluTimeStage",
+      "parameters": {
+        "input_byte_stream_product_name": "bytestream_bank_AT%0",
+        "output_product_name": "NaluTime"
+      },
+      "next": ["cleanup_bytestream"]
+    },
+    {
+      "id": "cleanup_bytestream",
+      "type": "ClearProductsStage",
+      "parameters": {
+        "tags": ["built_by_midas_event_to_bytestream_stage", "byte_stream"]
+      },
+      "next": []
+    }
+  ]
+}
