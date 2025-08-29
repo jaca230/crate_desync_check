@@ -3,150 +3,162 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <map>
-#include <fstream>
-#include <sstream>
-#include <iomanip>
 #include <algorithm>
 #include <cstdint>
+#include <fstream>
+#include <regex>
+#include <set>
 
 #include "midasio.h"
 
 namespace fs = std::filesystem;
 
-// Compare raw bank data
-bool banksEqual(const TMBank& b1, const char* data1, const TMBank& b2, const char* data2) {
-    if (!data1 || !data2) return false;
-    if (b1.data_size != b2.data_size) return false;
-    for (size_t i = 0; i < b1.data_size; ++i) {
-        if (static_cast<uint8_t>(data1[i]) != static_cast<uint8_t>(data2[i])) return false;
+// Extract triggers from CR07/CR08
+bool hasTriggerMismatch(const std::shared_ptr<TMEvent>& event) {
+    event->FindAllBanks();
+    uint32_t trigger_CR07 = 0, trigger_CR08 = 0;
+    bool found_CR07 = false, found_CR08 = false;
+
+    for (const auto& bank : event->banks) {
+        if (bank.name != "CR07" && bank.name != "CR08") continue;
+        const char* data = event->GetBankData(&bank);
+        if (!data || bank.data_size < 8) continue;
+
+        uint64_t header = 0;
+        for (int i = 0; i < 8; ++i)
+            header = (header << 8) | static_cast<uint8_t>(data[i]);
+        uint32_t trigger = (header >> 32) & 0xFFFFFF;
+
+        if (bank.name == "CR07") { trigger_CR07 = trigger; found_CR07 = true; }
+        if (bank.name == "CR08") { trigger_CR08 = trigger; found_CR08 = true; }
     }
-    return true;
+
+    return (found_CR07 && found_CR08) && (trigger_CR07 != trigger_CR08);
 }
 
-// Write a bank to a text file, 32 bytes per line
-void writeBankTextFile(const TMEvent& evt, const TMBank& bank, size_t eventNum, const std::string& label) {
-    const char* data = evt.GetBankData(&bank);
-    if (!data || bank.data_size == 0) return;
-
-    std::ostringstream fname;
-    fname << label << "_event" << eventNum << "_" << bank.name << ".txt";
-
-    std::ofstream out(fname.str());
-    out << "# Event " << eventNum << ", Bank " << bank.name << "\n";
-    out << "# " << label << "\n";
-
-    for (size_t i = 0; i < bank.data_size; ++i) {
-        if (i % 32 == 0 && i != 0) out << "\n";
-        out << std::hex << std::setw(2) << std::setfill('0')
-            << (static_cast<int>(static_cast<unsigned char>(data[i]))) << " ";
-    }
-    out << "\n";
-    out.close();
-
-    std::cout << "[INFO] Wrote bank " << bank.name << " of event "
-              << eventNum << " to " << fname.str() << "\n";
-}
-
-// Check a single subrun file for duplicate triggers
-void checkDuplicateTriggers(const fs::path& filepath) {
-    std::cout << "[INFO] Processing: " << filepath << "\n";
-
+// Scan one file, return true if mismatch found
+bool scanFile(const fs::path& filepath) {
     TMReaderInterface* reader = TMNewReader(filepath.c_str());
     if (!reader) {
         std::cerr << "[WARN] Failed to open " << filepath << "\n";
-        return;
+        return false;
     }
-
-    std::map<uint32_t, std::pair<std::shared_ptr<TMEvent>, size_t>> cr07Map;
-    std::map<uint32_t, std::pair<std::shared_ptr<TMEvent>, size_t>> cr08Map;
-
-    size_t eventCounter = 0;
-    bool firstDuplicateWritten = false;
 
     while (TMEvent* raw_event = TMReadEvent(reader)) {
-        ++eventCounter;
         std::shared_ptr<TMEvent> evt(raw_event);
-        evt->FindAllBanks();
-
-        for (const std::string& bankName : {"CR07", "CR08"}) {
-            TMBank* bankPtr = evt->FindBank(bankName.c_str());
-            if (!bankPtr || bankPtr->data_size < 8) continue;
-
-            const char* data = evt->GetBankData(bankPtr);
-            if (!data) continue;
-
-            uint64_t header = 0;
-            for (int i = 0; i < 8; ++i) header = (header << 8) | static_cast<uint8_t>(data[i]);
-            uint32_t triggerNum = static_cast<uint32_t>((header >> 32) & 0xFFFFFF);
-
-            auto& triggerMap = (bankName == "CR07") ? cr07Map : cr08Map;
-            auto it = triggerMap.find(triggerNum);
-
-            if (it != triggerMap.end() && !firstDuplicateWritten) {
-                std::cout << "[DUPLICATE] Bank " << bankName << " trigger " << triggerNum
-                          << " appears in events " << it->second.second
-                          << " and " << eventCounter << "\n";
-
-                // Write original and duplicate for both CR07 and CR08
-                for (const std::string& bName : {"CR07", "CR08"}) {
-                    TMBank* origBank = it->second.first->FindBank(bName.c_str());
-                    TMBank* dupBank  = evt->FindBank(bName.c_str());
-                    if (origBank) writeBankTextFile(*it->second.first, *origBank, it->second.second, "original_" + bName);
-                    if (dupBank)  writeBankTextFile(*evt, *dupBank, eventCounter, "duplicate_" + bName);
-                }
-
-                firstDuplicateWritten = true;
-            }
-
-            if (it == triggerMap.end()) {
-                triggerMap[triggerNum] = {evt, eventCounter};
-            }
+        if (hasTriggerMismatch(evt)) {
+            delete reader;
+            return true;
         }
     }
-
     delete reader;
+    return false;
 }
 
+struct RunFile {
+    int run;
+    int subrun;
+    fs::path path;
+};
+
 int main(int argc, char** argv) {
-    if (argc < 2 || argc > 3) {
-        std::cerr << "Usage:\n"
-                  << "  " << argv[0] << " <directory> <run_number>\n"
-                  << "  " << argv[0] << " <single_midas_file>\n";
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <repo_or_data_directory>\n";
         return EXIT_FAILURE;
     }
 
-    fs::path pathArg = argv[1];
-    if (!fs::exists(pathArg)) {
-        std::cerr << "[ERROR] Path does not exist: " << pathArg << "\n";
+    fs::path root = argv[1];
+    if (!fs::exists(root)) {
+        std::cerr << "[ERROR] Path does not exist: " << root << "\n";
         return EXIT_FAILURE;
     }
 
-    std::vector<fs::path> filesToCheck;
-    if (argc == 3) {
-        std::string runStr = argv[2];
-        if (!fs::is_directory(pathArg)) {
-            std::cerr << "[ERROR] Expected directory, got: " << pathArg << "\n";
-            return EXIT_FAILURE;
-        }
-
-        for (auto& entry : fs::directory_iterator(pathArg)) {
-            if (!entry.is_regular_file()) continue;
-            std::string fname = entry.path().filename().string();
-            if (fname.find("run" + runStr + "_") == 0) filesToCheck.push_back(entry.path());
-        }
-        if (filesToCheck.empty()) {
-            std::cerr << "[ERROR] No subruns found for run " << runStr << "\n";
-            return EXIT_FAILURE;
-        }
-        std::sort(filesToCheck.begin(), filesToCheck.end());
-    } else {
-        filesToCheck.push_back(pathArg);
+    std::ofstream log("results.txt", std::ios::app);
+    if (!log.is_open()) {
+        std::cerr << "[ERROR] Could not open results.txt for writing\n";
+        return EXIT_FAILURE;
     }
 
-    for (const auto& f : filesToCheck) {
-        checkDuplicateTriggers(f);
+    std::regex pattern(R"(run(\d{5})_(\d{5})\.mid\.lz4$)");
+    std::vector<RunFile> files;
+
+    // Collect valid files
+    for (auto& entry : fs::recursive_directory_iterator(root)) {
+        if (!entry.is_regular_file()) continue;
+        std::string fname = entry.path().filename().string();
+        std::smatch match;
+        if (std::regex_match(fname, match, pattern)) {
+            int run = std::stoi(match[1].str());
+            int subrun = std::stoi(match[2].str());
+            files.push_back({run, subrun, entry.path()});
+        }
     }
+
+    if (files.empty()) {
+        std::cout << "[INFO] No matching .mid.lz4 files found.\n";
+        return EXIT_SUCCESS;
+    }
+
+    // Sort by run then subrun
+    std::sort(files.begin(), files.end(),
+              [](const RunFile& a, const RunFile& b) {
+                  if (a.run != b.run) return a.run < b.run;
+                  return a.subrun < b.subrun;
+              });
+
+    size_t scanned_files = 0;
+    size_t files_with_mismatch = 0;
+    size_t runs_with_mismatch = 0;
+    std::set<int> all_runs; // Track all unique runs
+    int current_run = -1;
+    bool run_has_mismatch = false;
+
+    for (const auto& rf : files) {
+        all_runs.insert(rf.run); // Track this run
+
+        if (rf.run != current_run) {
+            // Moving to a new run
+            if (current_run != -1 && run_has_mismatch) {
+                ++runs_with_mismatch;
+            }
+            current_run = rf.run;
+            run_has_mismatch = false;
+        }
+
+        // Skip remaining subruns if this run already has a mismatch
+        if (run_has_mismatch) {
+            continue;
+        }
+
+        ++scanned_files;
+        std::cout << "[INFO] Scanning run " << rf.run
+                  << ", subrun " << rf.subrun
+                  << " (" << rf.path << ")\n";
+
+        if (scanFile(rf.path)) {
+            ++files_with_mismatch;
+            run_has_mismatch = true;
+            log << "Run " << rf.run
+                << " desync in file: " << rf.path.string()
+                << "\n" << std::flush;
+            std::cout << "[RESULT] Run " << rf.run
+                      << " has desync (found in " << rf.path << ")\n";
+        }
+    }
+
+    // Account for the last run
+    if (current_run != -1 && run_has_mismatch) {
+        ++runs_with_mismatch;
+    }
+
+    // Summary
+    std::string summary = "[SUMMARY] Scanned " + std::to_string(scanned_files) +
+                          " files across " + std::to_string(all_runs.size()) +
+                          " runs, " + std::to_string(runs_with_mismatch) +
+                          " of " + std::to_string(all_runs.size()) + " runs had desyncs.\n";
+
+    std::cout << summary;
+    log << summary << std::flush;
 
     return EXIT_SUCCESS;
 }
