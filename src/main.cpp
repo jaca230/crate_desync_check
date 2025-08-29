@@ -10,7 +10,7 @@
 
 namespace fs = std::filesystem;
 
-// Helper to extract trigger numbers from CR07 and CR08 banks in an event
+// Extract triggers from CR07/CR08
 bool hasTriggerMismatch(const std::shared_ptr<TMEvent>& event) {
     event->FindAllBanks();
     uint32_t trigger_CR07 = 0, trigger_CR08 = 0;
@@ -22,10 +22,9 @@ bool hasTriggerMismatch(const std::shared_ptr<TMEvent>& event) {
         if (!data || bank.data_size < 8) continue;
 
         uint64_t header = 0;
-        for (int i = 0; i < 8; ++i)
-            header = (header << 8) | static_cast<uint8_t>(data[i]);
-
+        for (int i = 0; i < 8; ++i) header = (header << 8) | static_cast<uint8_t>(data[i]);
         uint32_t trigger = (header >> 32) & 0xFFFFFF;
+
         if (bank.name == "CR07") { trigger_CR07 = trigger; found_CR07 = true; }
         if (bank.name == "CR08") { trigger_CR08 = trigger; found_CR08 = true; }
     }
@@ -33,14 +32,13 @@ bool hasTriggerMismatch(const std::shared_ptr<TMEvent>& event) {
     return (found_CR07 && found_CR08) && (trigger_CR07 != trigger_CR08);
 }
 
-// Check a single subrun file: returns true if there's a mismatch
+// Check a single subrun file
 bool subrunHasMismatch(const fs::path& filepath) {
     std::cout << "[INFO] Processing: " << filepath << "\n";
-
     TMReaderInterface* reader = TMNewReader(filepath.c_str());
     if (!reader) {
         std::cerr << "[WARN] Failed to open " << filepath << "\n";
-        return false; // treat as no mismatch
+        return false;
     }
 
     std::shared_ptr<TMEvent> first_event = nullptr;
@@ -51,7 +49,7 @@ bool subrunHasMismatch(const fs::path& filepath) {
         ++event_count;
         std::shared_ptr<TMEvent> wrapped_event(raw_event);
 
-        // Skip the absolute first and last events
+        // Skip absolute first event
         if (event_count == 1) continue;
 
         wrapped_event->FindAllBanks();
@@ -67,7 +65,7 @@ bool subrunHasMismatch(const fs::path& filepath) {
     }
     delete reader;
 
-    if (!first_event && !last_event) return false; // no events with both banks
+    if (!first_event && !last_event) return false;
 
     bool mismatch_first = first_event && hasTriggerMismatch(first_event);
     bool mismatch_last  = last_event  && hasTriggerMismatch(last_event);
@@ -76,55 +74,69 @@ bool subrunHasMismatch(const fs::path& filepath) {
 }
 
 int main(int argc, char** argv) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <directory> <run_number>\n";
+    if (argc < 2 || argc > 3) {
+        std::cerr << "Usage:\n"
+                  << "  " << argv[0] << " <directory> <run_number>\n"
+                  << "  " << argv[0] << " <single_midas_file>\n";
         return EXIT_FAILURE;
     }
 
-    fs::path dir = argv[1];
-    std::string run_str = argv[2]; // e.g., "00248"
-
-    if (!fs::exists(dir) || !fs::is_directory(dir)) {
-        std::cerr << "[ERROR] Directory does not exist: " << dir << "\n";
+    fs::path path_arg = argv[1];
+    if (!fs::exists(path_arg)) {
+        std::cerr << "[ERROR] Path does not exist: " << path_arg << "\n";
         return EXIT_FAILURE;
     }
 
-    // Gather all subruns for the given run
-    std::vector<fs::path> subruns;
-    for (auto& entry : fs::directory_iterator(dir)) {
-        if (!entry.is_regular_file()) continue;
-        std::string fname = entry.path().filename().string();
-        if (fname.find("run" + run_str + "_") != 0) continue; // match run
-        subruns.push_back(entry.path());
-    }
+    std::vector<fs::path> files_to_check;
 
-    if (subruns.empty()) {
-        std::cerr << "[ERROR] No subruns found for run " << run_str << " in " << dir << "\n";
-        return EXIT_FAILURE;
-    }
-
-    // Sort subruns lexicographically to preserve subrun order
-    std::sort(subruns.begin(), subruns.end());
-
-    // Binary search for earliest subrun with mismatch
-    int left = 0, right = subruns.size() - 1;
-    int earliest_idx = -1;
-
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (subrunHasMismatch(subruns[mid])) {
-            earliest_idx = mid;
-            right = mid - 1; // search earlier subruns
-        } else {
-            left = mid + 1;
+    if (argc == 3) {
+        // Directory + run_number mode
+        std::string run_str = argv[2];
+        if (!fs::is_directory(path_arg)) {
+            std::cerr << "[ERROR] Expected directory, got: " << path_arg << "\n";
+            return EXIT_FAILURE;
         }
+
+        for (auto& entry : fs::directory_iterator(path_arg)) {
+            if (!entry.is_regular_file()) continue;
+            std::string fname = entry.path().filename().string();
+            if (fname.find("run" + run_str + "_") == 0) files_to_check.push_back(entry.path());
+        }
+        if (files_to_check.empty()) {
+            std::cerr << "[ERROR] No subruns found for run " << run_str << "\n";
+            return EXIT_FAILURE;
+        }
+        std::sort(files_to_check.begin(), files_to_check.end());
+    } else {
+        // Single file mode
+        files_to_check.push_back(path_arg);
     }
 
-    if (earliest_idx >= 0) {
-        std::cout << "[RESULT] Earliest subrun with trigger mismatch: " 
-                  << subruns[earliest_idx] << "\n";
+    // If multiple files, do binary search for earliest mismatch
+    if (files_to_check.size() > 1) {
+        int left = 0, right = files_to_check.size() - 1;
+        int earliest_idx = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (subrunHasMismatch(files_to_check[mid])) {
+                earliest_idx = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (earliest_idx >= 0) {
+            std::cout << "[RESULT] Earliest subrun with trigger mismatch: " 
+                      << files_to_check[earliest_idx] << "\n";
+        } else {
+            std::cout << "[RESULT] No trigger mismatches found\n";
+        }
     } else {
-        std::cout << "[RESULT] No trigger mismatches found in run " << run_str << "\n";
+        // Single file
+        if (subrunHasMismatch(files_to_check[0]))
+            std::cout << "[RESULT] Trigger mismatch found in " << files_to_check[0] << "\n";
+        else
+            std::cout << "[RESULT] No trigger mismatch in " << files_to_check[0] << "\n";
     }
 
     return EXIT_SUCCESS;
