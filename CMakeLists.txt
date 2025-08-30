@@ -47,6 +47,44 @@ target_compile_definitions(desync_checker PRIVATE
     -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
 )
 
+# ----------------------- Single File Inspector -------------------
+add_executable(inspect_file src/inspect_file.cpp)
+
+target_include_directories(inspect_file PRIVATE
+    ${MIDAS_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(inspect_file PRIVATE
+    ${MIDAS_LIBS}
+    ${ZLIB_LIBRARIES}
+)
+
+target_compile_definitions(inspect_file PRIVATE
+    -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
+    -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
+)
+
+# ----------------------- Run Inspector Executable ---------------
+add_executable(inspect_run src/inspect_run.cpp)
+
+target_include_directories(inspect_run PRIVATE
+    ${MIDAS_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(inspect_run PRIVATE
+    ${MIDAS_LIBS}
+    ${ZLIB_LIBRARIES}
+)
+
+target_compile_definitions(inspect_run PRIVATE
+    -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
+    -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
+)
+
 # ----------------------- Corruption Analyzer Executable ----------
 add_executable(analyze_results src/analyze_results.cpp)
 
@@ -86,7 +124,7 @@ target_compile_definitions(analyze_subruns PRIVATE
 )
 
 # ----------------------- Output Directories ----------------------
-set_target_properties(desync_checker analyze_results analyze_subruns PROPERTIES
+set_target_properties(desync_checker analyze_results analyze_subruns inspect_file inspect_run PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
