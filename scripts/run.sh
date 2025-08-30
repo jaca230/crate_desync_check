@@ -10,8 +10,14 @@ show_help() {
     echo "Usage: ./run.sh <mode> [arguments]"
     echo
     echo "Modes:"
-    echo "  desync       Run the desync checker"
+    echo "  desync       Run the desync checker (scans directory)"
     echo "               Usage: ./run.sh desync <data_directory>"
+    echo
+    echo "  inspect      Inspect a single file for desyncs"
+    echo "               Usage: ./run.sh inspect <file_path>"
+    echo
+    echo "  run          Inspect all subruns for a specific run"
+    echo "               Usage: ./run.sh run <base_directory> <run_number>"
     echo
     echo "  analyze      Run the corruption analyzer (event-based estimates)"
     echo "               Usage: ./run.sh analyze <results.txt_path>"
@@ -23,6 +29,8 @@ show_help() {
     echo
     echo "Examples:"
     echo "  ./run.sh desync /path/to/data"
+    echo "  ./run.sh inspect /path/to/run12345_00001.mid.lz4"
+    echo "  ./run.sh run /path/to/data 12345"
     echo "  ./run.sh analyze scripts/results.txt"
     echo "  ./run.sh subruns scripts/results.txt"
 }
@@ -54,6 +62,42 @@ case "$MODE" in
         fi
         
         echo "[run.sh, INFO] Running desync_checker with directory: $1"
+        ;;
+        
+    inspect|inspect_file)
+        EXEC="$BASE_DIR/build/bin/inspect_file"
+        if [ ! -f "$EXEC" ]; then
+            echo "[ERROR] File inspector executable not found at $EXEC"
+            echo "        Run ./build.sh first"
+            exit 1
+        fi
+        
+        if [ $# -ne 1 ]; then
+            echo "[ERROR] Inspect mode requires exactly 1 argument: <file_path>"
+            echo "Usage: ./run.sh inspect <file_path>"
+            exit 1
+        fi
+        
+        echo "[run.sh, INFO] Running inspect_file with file: $1"
+        ;;
+        
+    run|inspect_run)
+        EXEC="$BASE_DIR/build/bin/inspect_run"
+        if [ ! -f "$EXEC" ]; then
+            echo "[ERROR] Run inspector executable not found at $EXEC"
+            echo "        Run ./build.sh first"
+            exit 1
+        fi
+        
+        if [ $# -ne 2 ]; then
+            echo "[ERROR] Run mode requires exactly 2 arguments: <base_directory> <run_number>"
+            echo "Usage: ./run.sh run <base_directory> <run_number>"
+            exit 1
+        fi
+        
+        echo "[run.sh, INFO] Running inspect_run with:"
+        echo "               Base directory: $1"
+        echo "               Run number: $2"
         ;;
         
     analyze|analyzer)

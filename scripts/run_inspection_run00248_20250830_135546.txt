@@ -1,0 +1,32 @@
+=== RUN 248 INSPECTION REPORT ===
+Generated: 2025-08-30 13:55:46
+
+SUMMARY:
+  Total subruns found: 18
+  Corrupted subruns: 10
+  Corruption percentage: 55.56%
+
+DETAILED RESULTS:
+Subrun | Status       | Events | First Desync | File Path
+-------|--------------|--------|--------------|----------------------------------------------------------
+     0 | OK           |   4545 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00000.mid.lz4
+   385 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00385.mid.lz4
+   396 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00396.mid.lz4
+   397 | DESYNC_FOUND |   4544 |         2360 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00397.mid.lz4
+   398 | DESYNC_FOUND |   4544 |         3064 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00398.mid.lz4
+   399 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00399.mid.lz4
+   400 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00400.mid.lz4
+   496 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00496.mid.lz4
+   593 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00593.mid.lz4
+   594 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00594.mid.lz4
+   595 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00595.mid.lz4
+   596 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00596.mid.lz4
+   597 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00597.mid.lz4
+   598 | OK           |   4544 |          N/A | /home/jack/cpp_projects/unpackers/run_storage/run00248_00598.mid.lz4
+   599 | DESYNC_FOUND |   4544 |         1822 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00599.mid.lz4
+   600 | DESYNC_FOUND |   4544 |          245 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00600.mid.lz4
+   601 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00601.mid.lz4
+   602 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00602.mid.lz4
+
+CORRUPTED SUBRUNS LIST:
+385, 397, 398, 399, 400, 496, 599, 600, 601, 602
