@@ -13,14 +13,18 @@ show_help() {
     echo "  desync       Run the desync checker"
     echo "               Usage: ./run.sh desync <data_directory>"
     echo
-    echo "  analyze      Run the corruption analyzer"
+    echo "  analyze      Run the corruption analyzer (event-based estimates)"
     echo "               Usage: ./run.sh analyze <results.txt_path>"
+    echo
+    echo "  subruns      Run the subrun corruption density analyzer"
+    echo "               Usage: ./run.sh subruns <results.txt_path>"
     echo
     echo "  -h, --help   Display this help message"
     echo
     echo "Examples:"
     echo "  ./run.sh desync /path/to/data"
     echo "  ./run.sh analyze scripts/results.txt"
+    echo "  ./run.sh subruns scripts/results.txt"
 }
 
 # Check if at least one argument is provided
@@ -68,6 +72,24 @@ case "$MODE" in
         fi
         
         echo "[run.sh, INFO] Running analyze_results with:"
+        echo "               Results file: $1"
+        ;;
+        
+    subruns|subrun)
+        EXEC="$BASE_DIR/build/bin/analyze_subruns"
+        if [ ! -f "$EXEC" ]; then
+            echo "[ERROR] Subrun analyzer executable not found at $EXEC"
+            echo "        Run ./build.sh first"
+            exit 1
+        fi
+        
+        if [ $# -ne 1 ]; then
+            echo "[ERROR] Subruns mode requires exactly 1 argument: <results.txt_path>"
+            echo "Usage: ./run.sh subruns <results.txt_path>"
+            exit 1
+        fi
+        
+        echo "[run.sh, INFO] Running analyze_subruns with:"
         echo "               Results file: $1"
         ;;
         

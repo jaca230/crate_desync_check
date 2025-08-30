@@ -1,0 +1,569 @@
+=== DETAILED CORRUPTION ANALYSIS ===
+
+Run 110:
+  Corrupted file: /data1/online/run00110_00000.mid.lz4
+  Corrupted at subrun: 0
+  Maximum subrun: 0
+  Events before corruption: 0
+  Total events in run: 22487
+  Maximum estimated corruption: 100.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 143:
+  Corrupted file: /data1/online/run00143_00000.mid.lz4
+  Corrupted at subrun: 0
+  Maximum subrun: 0
+  Events before corruption: 0
+  Total events in run: 130091
+  Maximum estimated corruption: 100.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 166:
+  Corrupted file: /data1/online/run00166_00028.mid.lz4
+  Corrupted at subrun: 28
+  Maximum subrun: 43
+  Events before corruption: 129920
+  Total events in run: 204160
+  Maximum estimated corruption: 36.36%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 167:
+  Corrupted file: /data1/online/run00167_00165.mid.lz4
+  Corrupted at subrun: 165
+  Maximum subrun: 213
+  Events before corruption: 773520
+  Total events in run: 1003232
+  Maximum estimated corruption: 22.90%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 172:
+  Corrupted file: /data1/online/run00172_00066.mid.lz4
+  Corrupted at subrun: 66
+  Maximum subrun: 220
+  Events before corruption: 299904
+  Total events in run: 1004224
+  Maximum estimated corruption: 70.14%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 175:
+  Corrupted file: /data1/online/run00175_00169.mid.lz4
+  Corrupted at subrun: 169
+  Maximum subrun: 220
+  Events before corruption: 767936
+  Total events in run: 1004224
+  Maximum estimated corruption: 23.53%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 176:
+  Corrupted file: /data1/online/run00176_00090.mid.lz4
+  Corrupted at subrun: 90
+  Maximum subrun: 220
+  Events before corruption: 408960
+  Total events in run: 1004224
+  Maximum estimated corruption: 59.28%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 180:
+  Corrupted file: /data1/online/run00180_00095.mid.lz4
+  Corrupted at subrun: 95
+  Maximum subrun: 220
+  Events before corruption: 431680
+  Total events in run: 1004224
+  Maximum estimated corruption: 57.01%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 182:
+  Corrupted file: /data1/online/run00182_00084.mid.lz4
+  Corrupted at subrun: 84
+  Maximum subrun: 220
+  Events before corruption: 381696
+  Total events in run: 1004224
+  Maximum estimated corruption: 61.99%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 183:
+  Corrupted file: /data1/online/run00183_00073.mid.lz4
+  Corrupted at subrun: 73
+  Maximum subrun: 172
+  Events before corruption: 331712
+  Total events in run: 786112
+  Maximum estimated corruption: 57.80%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 185:
+  Corrupted file: /data1/online/run00185_00053.mid.lz4
+  Corrupted at subrun: 53
+  Maximum subrun: 220
+  Events before corruption: 240832
+  Total events in run: 1004224
+  Maximum estimated corruption: 76.02%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 193:
+  Corrupted file: /data1/online/run00193_00013.mid.lz4
+  Corrupted at subrun: 13
+  Maximum subrun: 220
+  Events before corruption: 59072
+  Total events in run: 1004224
+  Maximum estimated corruption: 94.12%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 196:
+  Corrupted file: /data1/online/run00196_00206.mid.lz4
+  Corrupted at subrun: 206
+  Maximum subrun: 217
+  Events before corruption: 936064
+  Total events in run: 990592
+  Maximum estimated corruption: 5.50%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 201:
+  Corrupted file: /data1/online/run00201_00009.mid.lz4
+  Corrupted at subrun: 9
+  Maximum subrun: 220
+  Events before corruption: 40896
+  Total events in run: 1004224
+  Maximum estimated corruption: 95.93%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 204:
+  Corrupted file: /data1/online/run00204_00021.mid.lz4
+  Corrupted at subrun: 21
+  Maximum subrun: 220
+  Events before corruption: 95424
+  Total events in run: 1004224
+  Maximum estimated corruption: 90.50%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 205:
+  Corrupted file: /data1/online/run00205_00022.mid.lz4
+  Corrupted at subrun: 22
+  Maximum subrun: 220
+  Events before corruption: 99968
+  Total events in run: 1004224
+  Maximum estimated corruption: 90.05%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 206:
+  Corrupted file: /data1/online/run00206_00078.mid.lz4
+  Corrupted at subrun: 78
+  Maximum subrun: 220
+  Events before corruption: 354432
+  Total events in run: 1004224
+  Maximum estimated corruption: 64.71%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 207:
+  Corrupted file: /data1/online/run00207_00018.mid.lz4
+  Corrupted at subrun: 18
+  Maximum subrun: 220
+  Events before corruption: 81792
+  Total events in run: 1004224
+  Maximum estimated corruption: 91.86%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 208:
+  Corrupted file: /data1/online/run00208_00004.mid.lz4
+  Corrupted at subrun: 4
+  Maximum subrun: 220
+  Events before corruption: 18176
+  Total events in run: 1004224
+  Maximum estimated corruption: 98.19%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 212:
+  Corrupted file: /data1/online/run00212_00036.mid.lz4
+  Corrupted at subrun: 36
+  Maximum subrun: 220
+  Events before corruption: 163584
+  Total events in run: 1004224
+  Maximum estimated corruption: 83.71%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 213:
+  Corrupted file: /data1/online/run00213_00002.mid.lz4
+  Corrupted at subrun: 2
+  Maximum subrun: 9
+  Events before corruption: 9088
+  Total events in run: 45440
+  Maximum estimated corruption: 80.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 218:
+  Corrupted file: /data1/online/run00218_00273.mid.lz4
+  Corrupted at subrun: 273
+  Maximum subrun: 279
+  Events before corruption: 1240512
+  Total events in run: 1272320
+  Maximum estimated corruption: 2.50%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 231:
+  Corrupted file: /data1/online/run00231_00226.mid.lz4
+  Corrupted at subrun: 226
+  Maximum subrun: 634
+  Events before corruption: 1026944
+  Total events in run: 2885440
+  Maximum estimated corruption: 64.41%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 234:
+  Corrupted file: /data1/online/run00234_00544.mid.lz4
+  Corrupted at subrun: 544
+  Maximum subrun: 731
+  Events before corruption: 2472480
+  Total events in run: 3326940
+  Maximum estimated corruption: 25.68%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 236:
+  Corrupted file: /data1/online/run00236_00003.mid.lz4
+  Corrupted at subrun: 3
+  Maximum subrun: 390
+  Events before corruption: 13632
+  Total events in run: 1776704
+  Maximum estimated corruption: 99.23%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 237:
+  Corrupted file: /data1/online/run00237_00094.mid.lz4
+  Corrupted at subrun: 94
+  Maximum subrun: 443
+  Events before corruption: 427136
+  Total events in run: 2017536
+  Maximum estimated corruption: 78.83%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 240:
+  Corrupted file: /data1/online/run00240_00180.mid.lz4
+  Corrupted at subrun: 180
+  Maximum subrun: 231
+  Events before corruption: 817920
+  Total events in run: 1054208
+  Maximum estimated corruption: 22.41%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 241:
+  Corrupted file: /data1/online/run00241_00020.mid.lz4
+  Corrupted at subrun: 20
+  Maximum subrun: 616
+  Events before corruption: 90880
+  Total events in run: 2803648
+  Maximum estimated corruption: 96.76%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 244:
+  Corrupted file: /data1/online/run00244_00131.mid.lz4
+  Corrupted at subrun: 131
+  Maximum subrun: 492
+  Events before corruption: 595264
+  Total events in run: 2240192
+  Maximum estimated corruption: 73.43%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 245:
+  Corrupted file: /data1/online/run00245_00002.mid.lz4
+  Corrupted at subrun: 2
+  Maximum subrun: 463
+  Events before corruption: 9088
+  Total events in run: 2108416
+  Maximum estimated corruption: 99.57%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 247:
+  Corrupted file: /data1/online/run00247_00053.mid.lz4
+  Corrupted at subrun: 53
+  Maximum subrun: 222
+  Events before corruption: 240832
+  Total events in run: 1013312
+  Maximum estimated corruption: 76.23%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 248:
+  Corrupted file: /data1/online/run00248_00103.mid.lz4
+  Corrupted at subrun: 103
+  Maximum subrun: 690
+  Events before corruption: 468032
+  Total events in run: 3139904
+  Maximum estimated corruption: 85.09%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 257:
+  Corrupted file: /data1/online/run00257_00095.mid.lz4
+  Corrupted at subrun: 95
+  Maximum subrun: 115
+  Events before corruption: 431680
+  Total events in run: 527104
+  Maximum estimated corruption: 18.10%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 258:
+  Corrupted file: /data1/online/run00258_00014.mid.lz4
+  Corrupted at subrun: 14
+  Maximum subrun: 385
+  Events before corruption: 63616
+  Total events in run: 1753984
+  Maximum estimated corruption: 96.37%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 259:
+  Corrupted file: /data1/online/run00259_00017.mid.lz4
+  Corrupted at subrun: 17
+  Maximum subrun: 67
+  Events before corruption: 77248
+  Total events in run: 308992
+  Maximum estimated corruption: 75.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 260:
+  Corrupted file: /data1/online/run00260_00000.mid.lz4
+  Corrupted at subrun: 0
+  Maximum subrun: 53
+  Events before corruption: 0
+  Total events in run: 245430
+  Maximum estimated corruption: 100.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 262:
+  Corrupted file: /data1/online/run00262_00409.mid.lz4
+  Corrupted at subrun: 409
+  Maximum subrun: 1062
+  Events before corruption: 1858496
+  Total events in run: 4830272
+  Maximum estimated corruption: 61.52%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 263:
+  Corrupted file: /data1/online/run00263_00100.mid.lz4
+  Corrupted at subrun: 100
+  Maximum subrun: 1323
+  Events before corruption: 454400
+  Total events in run: 6016256
+  Maximum estimated corruption: 92.45%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 267:
+  Corrupted file: /data1/online/run00267_00191.mid.lz4
+  Corrupted at subrun: 191
+  Maximum subrun: 282
+  Events before corruption: 1426579
+  Total events in run: 2113727
+  Maximum estimated corruption: 32.51%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 290:
+  Corrupted file: /data1/online/run00290_00050.mid.lz4
+  Corrupted at subrun: 50
+  Maximum subrun: 846
+  Events before corruption: 590650
+  Total events in run: 10005611
+  Maximum estimated corruption: 94.10%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 301:
+  Corrupted file: /data1/online/run00301_00029.mid.lz4
+  Corrupted at subrun: 29
+  Maximum subrun: 642
+  Events before corruption: 451327
+  Total events in run: 10007009
+  Maximum estimated corruption: 95.49%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 302:
+  Corrupted file: /data1/online/run00302_00018.mid.lz4
+  Corrupted at subrun: 18
+  Maximum subrun: 642
+  Events before corruption: 280134
+  Total events in run: 10007009
+  Maximum estimated corruption: 97.20%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 303:
+  Corrupted file: /data1/online/run00303_00016.mid.lz4
+  Corrupted at subrun: 16
+  Maximum subrun: 642
+  Events before corruption: 249008
+  Total events in run: 10007009
+  Maximum estimated corruption: 97.51%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 304:
+  Corrupted file: /data1/online/run00304_00053.mid.lz4
+  Corrupted at subrun: 53
+  Maximum subrun: 436
+  Events before corruption: 824839
+  Total events in run: 6801031
+  Maximum estimated corruption: 87.87%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 311:
+  Corrupted file: /data1/online/run00311_00017.mid.lz4
+  Corrupted at subrun: 17
+  Maximum subrun: 188
+  Events before corruption: 264571
+  Total events in run: 2941407
+  Maximum estimated corruption: 91.01%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 319:
+  Corrupted file: /data1/online/run00319_00051.mid.lz4
+  Corrupted at subrun: 51
+  Maximum subrun: 64
+  Events before corruption: 793713
+  Total events in run: 1011595
+  Maximum estimated corruption: 21.54%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 320:
+  Corrupted file: /data1/online/run00320_00010.mid.lz4
+  Corrupted at subrun: 10
+  Maximum subrun: 64
+  Events before corruption: 155630
+  Total events in run: 1011595
+  Maximum estimated corruption: 84.62%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 322:
+  Corrupted file: /data1/online/run00322_00000.mid.lz4
+  Corrupted at subrun: 0
+  Maximum subrun: 64
+  Events before corruption: 0
+  Total events in run: 1010295
+  Maximum estimated corruption: 100.00%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 325:
+  Corrupted file: /data1/online/run00325_00031.mid.lz4
+  Corrupted at subrun: 31
+  Maximum subrun: 63
+  Events before corruption: 487227
+  Total events in run: 1005888
+  Maximum estimated corruption: 51.56%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 326:
+  Corrupted file: /data1/online/run00326_00018.mid.lz4
+  Corrupted at subrun: 18
+  Maximum subrun: 63
+  Events before corruption: 282906
+  Total events in run: 1005888
+  Maximum estimated corruption: 71.88%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 327:
+  Corrupted file: /data1/online/run00327_00030.mid.lz4
+  Corrupted at subrun: 30
+  Maximum subrun: 63
+  Events before corruption: 471510
+  Total events in run: 1005888
+  Maximum estimated corruption: 53.12%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 329:
+  Corrupted file: /data1/online/run00329_00010.mid.lz4
+  Corrupted at subrun: 10
+  Maximum subrun: 63
+  Events before corruption: 157170
+  Total events in run: 1005888
+  Maximum estimated corruption: 84.38%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 330:
+  Corrupted file: /data1/online/run00330_00035.mid.lz4
+  Corrupted at subrun: 35
+  Maximum subrun: 63
+  Events before corruption: 550095
+  Total events in run: 1005888
+  Maximum estimated corruption: 45.31%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 331:
+  Corrupted file: /data1/online/run00331_00047.mid.lz4
+  Corrupted at subrun: 47
+  Maximum subrun: 62
+  Events before corruption: 738699
+  Total events in run: 990171
+  Maximum estimated corruption: 25.40%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 334:
+  Corrupted file: /data1/online/run00334_00020.mid.lz4
+  Corrupted at subrun: 20
+  Maximum subrun: 63
+  Events before corruption: 314340
+  Total events in run: 1005888
+  Maximum estimated corruption: 68.75%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 335:
+  Corrupted file: /data1/online/run00335_00001.mid.lz4
+  Corrupted at subrun: 1
+  Maximum subrun: 63
+  Events before corruption: 15717
+  Total events in run: 1005888
+  Maximum estimated corruption: 98.44%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 336:
+  Corrupted file: /data1/online/run00336_00002.mid.lz4
+  Corrupted at subrun: 2
+  Maximum subrun: 63
+  Events before corruption: 31434
+  Total events in run: 1005888
+  Maximum estimated corruption: 96.88%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 337:
+  Corrupted file: /data1/online/run00337_00012.mid.lz4
+  Corrupted at subrun: 12
+  Maximum subrun: 63
+  Events before corruption: 188604
+  Total events in run: 1005888
+  Maximum estimated corruption: 81.25%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 338:
+  Corrupted file: /data1/online/run00338_00003.mid.lz4
+  Corrupted at subrun: 3
+  Maximum subrun: 63
+  Events before corruption: 47151
+  Total events in run: 1005888
+  Maximum estimated corruption: 95.31%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 339:
+  Corrupted file: /data1/online/run00339_00021.mid.lz4
+  Corrupted at subrun: 21
+  Maximum subrun: 63
+  Events before corruption: 330057
+  Total events in run: 1005888
+  Maximum estimated corruption: 67.19%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 340:
+  Corrupted file: /data1/online/run00340_00005.mid.lz4
+  Corrupted at subrun: 5
+  Maximum subrun: 63
+  Events before corruption: 78585
+  Total events in run: 1005888
+  Maximum estimated corruption: 92.19%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 341:
+  Corrupted file: /data1/online/run00341_00002.mid.lz4
+  Corrupted at subrun: 2
+  Maximum subrun: 63
+  Events before corruption: 31434
+  Total events in run: 1005888
+  Maximum estimated corruption: 96.88%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
+Run 342:
+  Corrupted file: /data1/online/run00342_00014.mid.lz4
+  Corrupted at subrun: 14
+  Maximum subrun: 63
+  Events before corruption: 220038
+  Total events in run: 1005888
+  Maximum estimated corruption: 78.12%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+

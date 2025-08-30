@@ -1,0 +1,11 @@
+=== DETAILED SUBRUN CORRUPTION ANALYSIS ===
+
+Run 248:
+  First corrupted subrun: 385
+  Maximum subrun: 602
+  Total subruns found: 18
+  Subruns checked (from first corruption): 17
+  Corrupted subruns found: 10
+  Corruption percentage of total subruns: 1.66%
+  Corrupted subrun list: 385, 397, 398, 399, 400, 496, 599, 600, 601, 602
+

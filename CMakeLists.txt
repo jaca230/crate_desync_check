@@ -66,8 +66,27 @@ target_compile_definitions(analyze_results PRIVATE
     -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
 )
 
+# ----------------------- Subrun Analyzer Executable -------------
+add_executable(analyze_subruns src/analyze_subruns.cpp)
+
+target_include_directories(analyze_subruns PRIVATE
+    ${MIDAS_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(analyze_subruns PRIVATE
+    ${MIDAS_LIBS}
+    ${ZLIB_LIBRARIES}
+)
+
+target_compile_definitions(analyze_subruns PRIVATE
+    -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
+    -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
+)
+
 # ----------------------- Output Directories ----------------------
-set_target_properties(desync_checker analyze_results PROPERTIES
+set_target_properties(desync_checker analyze_results analyze_subruns PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
