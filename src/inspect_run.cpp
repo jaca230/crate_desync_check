@@ -9,6 +9,7 @@
 #include <regex>
 #include <iomanip>
 #include <chrono>
+#include <optional>
 
 #include "midasio.h"
 
@@ -106,10 +107,8 @@ std::vector<fs::path> findSubrunFiles(const fs::path& base_dir, int run_number) 
         return subrun_files;
     }
     
-    // Scan directory for matching files
     for (const auto& entry : fs::recursive_directory_iterator(base_dir)) {
         if (!entry.is_regular_file()) continue;
-        
         std::string filename = entry.path().filename().string();
         if (std::regex_search(filename, pattern)) {
             subrun_files.push_back(entry.path());
@@ -132,7 +131,6 @@ std::vector<fs::path> findSubrunFiles(const fs::path& base_dir, int run_number) 
     return subrun_files;
 }
 
-// Extract subrun number from filename
 int extractSubrunNumber(const fs::path& filepath, int run_number) {
     std::string run_str = std::to_string(run_number);
     run_str = std::string(5 - run_str.length(), '0') + run_str;
@@ -144,11 +142,9 @@ int extractSubrunNumber(const fs::path& filepath, int run_number) {
     if (std::regex_search(filename, match, pattern)) {
         return std::stoi(match[1].str());
     }
-    
-    return -1; // Invalid
+    return -1;
 }
 
-// Generate output filename
 std::string generateOutputFilename(int run_number, const std::string& base_name = "run_inspection") {
     auto now = std::chrono::system_clock::now();
     auto time_t = std::chrono::system_clock::to_time_t(now);
@@ -160,7 +156,6 @@ std::string generateOutputFilename(int run_number, const std::string& base_name 
     return oss.str();
 }
 
-// Write detailed report
 void writeReport(const RunInspection& inspection, const std::string& output_file) {
     std::ofstream report(output_file);
     if (!report.is_open()) {
@@ -168,19 +163,16 @@ void writeReport(const RunInspection& inspection, const std::string& output_file
         return;
     }
     
-    // Header
     report << "=== RUN " << inspection.run_number << " INSPECTION REPORT ===\n";
     auto now = std::time(nullptr);
     report << "Generated: " << std::put_time(std::localtime(&now), "%Y-%m-%d %H:%M:%S") << "\n\n";
     
-    // Summary
     report << "SUMMARY:\n";
     report << "  Total subruns found: " << inspection.total_subruns << "\n";
     report << "  Corrupted subruns: " << inspection.corrupted_subruns << "\n";
     report << "  Corruption percentage: " << std::fixed << std::setprecision(2) 
            << inspection.corruption_percentage << "%\n\n";
     
-    // Detailed results
     report << "DETAILED RESULTS:\n";
     report << "Subrun | Status       | Events | First Desync | File Path\n";
     report << "-------|--------------|--------|--------------|----------------------------------------------------------\n";
@@ -195,11 +187,9 @@ void writeReport(const RunInspection& inspection, const std::string& output_file
         } else {
             report << std::setw(12) << "N/A" << " | ";
         }
-        
         report << subrun.filepath << "\n";
     }
     
-    // Corrupted subruns list
     if (inspection.corrupted_subruns > 0) {
         report << "\nCORRUPTED SUBRUNS LIST:\n";
         bool first = true;
@@ -212,69 +202,61 @@ void writeReport(const RunInspection& inspection, const std::string& output_file
         }
         report << "\n";
     }
-    
     report.close();
 }
 
 int main(int argc, char** argv) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <base_directory> <run_number>\n";
-        std::cerr << "  base_directory: Directory to search for run files\n";
-        std::cerr << "  run_number: Run number to inspect (e.g., 12345)\n";
-        std::cerr << "\nThis tool will:\n";
-        std::cerr << "  1. Find all subruns for the specified run\n";
-        std::cerr << "  2. Check each subrun for trigger desyncs\n";
-        std::cerr << "  3. Write a detailed report to a timestamped file\n";
+    if (argc < 3 || argc > 4) {
+        std::cerr << "Usage: " << argv[0] << " <base_directory> <run_number> [start_subrun]\n";
         return EXIT_FAILURE;
     }
 
     fs::path base_dir = argv[1];
     int run_number;
-    
     try {
         run_number = std::stoi(argv[2]);
-    } catch (const std::exception& e) {
-        std::cerr << "[ERROR] Invalid run number: " << argv[2] << "\n";
+    } catch (...) {
+        std::cerr << "[ERROR] Invalid run number\n";
         return EXIT_FAILURE;
     }
-    
-    if (run_number <= 0) {
-        std::cerr << "[ERROR] Run number must be positive: " << run_number << "\n";
-        return EXIT_FAILURE;
+
+    std::optional<int> start_subrun;
+    if (argc == 4) {
+        try {
+            start_subrun = std::stoi(argv[3]);
+        } catch (...) {
+            std::cerr << "[ERROR] Invalid start_subrun: " << argv[3] << "\n";
+            return EXIT_FAILURE;
+        }
     }
-    
+
     std::cout << "[INFO] Inspecting run " << run_number << " in directory: " << base_dir << "\n";
-    
-    // Find all subrun files
-    std::vector<fs::path> subrun_files = findSubrunFiles(base_dir, run_number);
-    
+    if (start_subrun) {
+        std::cout << "[INFO] Starting from subrun >= " << *start_subrun << "\n";
+    }
+
+    auto subrun_files = findSubrunFiles(base_dir, run_number);
     if (subrun_files.empty()) {
         std::cout << "[INFO] No subrun files found for run " << run_number << "\n";
         return EXIT_SUCCESS;
     }
-    
-    std::cout << "[INFO] Found " << subrun_files.size() << " subrun files\n";
-    
-    // Initialize inspection results
+
     RunInspection inspection;
     inspection.run_number = run_number;
-    inspection.total_subruns = subrun_files.size();
+    inspection.total_subruns = 0;
     inspection.corrupted_subruns = 0;
-    
-    // Inspect each subrun
-    std::cout << "[INFO] Starting inspection...\n\n";
-    
+
     for (size_t i = 0; i < subrun_files.size(); ++i) {
-        const auto& file = subrun_files[i];
-        int subrun_num = extractSubrunNumber(file, run_number);
-        
-        std::cout << "[" << (i+1) << "/" << subrun_files.size() << "] ";
-        std::cout << "Inspecting subrun " << subrun_num << "... ";
-        std::cout.flush();
-        
-        SubrunResult result = inspectSubrun(file, subrun_num);
+        int subrun_num = extractSubrunNumber(subrun_files[i], run_number);
+        if (start_subrun && subrun_num < *start_subrun) continue;
+
+        std::cout << "[" << (i+1) << "/" << subrun_files.size() << "] Inspecting subrun " 
+                  << subrun_num << "... " << std::flush;
+
+        SubrunResult result = inspectSubrun(subrun_files[i], subrun_num);
         inspection.subruns.push_back(result);
-        
+        inspection.total_subruns++;
+
         if (result.has_desync) {
             inspection.corrupted_subruns++;
             std::cout << "CORRUPTED (first desync at event " << result.first_desync_event << ")\n";
@@ -284,24 +266,21 @@ int main(int argc, char** argv) {
             std::cout << "OK (" << result.event_count << " events)\n";
         }
     }
-    
-    // Calculate corruption percentage
+
     if (inspection.total_subruns > 0) {
-        inspection.corruption_percentage = (double)inspection.corrupted_subruns / inspection.total_subruns * 100.0;
+        inspection.corruption_percentage = 
+            (double)inspection.corrupted_subruns / inspection.total_subruns * 100.0;
     }
-    
+
     std::cout << "\n=== INSPECTION COMPLETE ===\n";
     std::cout << "Total subruns: " << inspection.total_subruns << "\n";
     std::cout << "Corrupted subruns: " << inspection.corrupted_subruns << "\n";
     std::cout << "Corruption percentage: " << std::fixed << std::setprecision(2) 
               << inspection.corruption_percentage << "%\n";
-    
-    // Write report
-    std::string output_file = generateOutputFilename(run_number);
+
+    auto output_file = generateOutputFilename(run_number);
     writeReport(inspection, output_file);
-    
-    std::cout << "\n[INFO] Detailed report written to: " << output_file << "\n";
-    
-    // Exit with appropriate code
+    std::cout << "[INFO] Detailed report written to: " << output_file << "\n";
+
     return (inspection.corrupted_subruns > 0) ? 1 : 0;
 }

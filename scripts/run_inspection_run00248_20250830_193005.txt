@@ -1,0 +1,17 @@
+=== RUN 248 INSPECTION REPORT ===
+Generated: 2025-08-30 19:30:05
+
+SUMMARY:
+  Total subruns found: 3
+  Corrupted subruns: 3
+  Corruption percentage: 100.00%
+
+DETAILED RESULTS:
+Subrun | Status       | Events | First Desync | File Path
+-------|--------------|--------|--------------|----------------------------------------------------------
+   600 | DESYNC_FOUND |   4544 |          245 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00600.mid.lz4
+   601 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00601.mid.lz4
+   602 | DESYNC_FOUND |   4544 |            2 | /home/jack/cpp_projects/unpackers/run_storage/run00248_00602.mid.lz4
+
+CORRUPTED SUBRUNS LIST:
+600, 601, 602

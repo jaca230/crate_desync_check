@@ -85,19 +85,21 @@ case "$MODE" in
         EXEC="$BASE_DIR/build/bin/inspect_run"
         if [ ! -f "$EXEC" ]; then
             echo "[ERROR] Run inspector executable not found at $EXEC"
-            echo "        Run ./build.sh first"
             exit 1
         fi
         
-        if [ $# -ne 2 ]; then
-            echo "[ERROR] Run mode requires exactly 2 arguments: <base_directory> <run_number>"
-            echo "Usage: ./run.sh run <base_directory> <run_number>"
+        if [ $# -lt 2 ] || [ $# -gt 3 ]; then
+            echo "[ERROR] Run mode requires 2 or 3 arguments: <base_directory> <run_number> [start_subrun]"
+            echo "Usage: ./run.sh run <base_directory> <run_number> [start_subrun]"
             exit 1
         fi
         
         echo "[run.sh, INFO] Running inspect_run with:"
         echo "               Base directory: $1"
         echo "               Run number: $2"
+        if [ $# -eq 3 ]; then
+            echo "               Starting subrun: $3"
+        fi
         ;;
         
     analyze|analyzer)
