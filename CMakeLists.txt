@@ -10,12 +10,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wno-stringop-overflow)
 endif()
 
-# ----------------------- Source Files -----------------------------
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
-
-# ----------------------- Executable -------------------------------
-add_executable(${PROJECT_NAME} ${SOURCES})
-
 # ----------------------- MIDAS System -----------------------------
 if(NOT DEFINED ENV{MIDASSYS})
     message(FATAL_ERROR "Environment variable MIDASSYS not set. Please point to your MIDAS installation.")
@@ -34,27 +28,46 @@ set(MIDAS_LIBS
 # ----------------------- Find ZLIB -------------------------------
 find_package(ZLIB REQUIRED)
 
-# ----------------------- Include Directories ----------------------
-target_include_directories(${PROJECT_NAME} PRIVATE
+# ----------------------- Main Executable (Desync Checker) --------
+add_executable(desync_checker src/main.cpp)
+
+target_include_directories(desync_checker PRIVATE
     ${MIDAS_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# ----------------------- Link Libraries ---------------------------
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(desync_checker PRIVATE
     ${MIDAS_LIBS}
     ${ZLIB_LIBRARIES}
 )
 
-# ----------------------- Optional Compile Definitions ------------
-target_compile_definitions(${PROJECT_NAME} PRIVATE
+target_compile_definitions(desync_checker PRIVATE
+    -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
+    -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
+)
+
+# ----------------------- Corruption Analyzer Executable ----------
+add_executable(analyze_results src/analyze_results.cpp)
+
+target_include_directories(analyze_results PRIVATE
+    ${MIDAS_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(analyze_results PRIVATE
+    ${MIDAS_LIBS}
+    ${ZLIB_LIBRARIES}
+)
+
+target_compile_definitions(analyze_results PRIVATE
     -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
     -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
 )
 
 # ----------------------- Output Directories ----------------------
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(desync_checker analyze_results PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib

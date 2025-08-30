@@ -1,0 +1,11 @@
+=== DETAILED CORRUPTION ANALYSIS ===
+
+Run 248:
+  Corrupted file: /home/jack/cpp_projects/unpackers/run_storage/run00248_00385.mid.lz4
+  Corrupted at subrun: 385
+  Maximum subrun: 602
+  Events before corruption: 1749440
+  Total events in run: 2740032
+  Maximum estimated corruption: 36.15%
+  Note: This is a maximum estimate - data may have recovered in later subruns
+
