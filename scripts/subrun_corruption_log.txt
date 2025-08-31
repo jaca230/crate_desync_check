@@ -1,0 +1,31 @@
+=== Subrun Corruption Analysis Log ===
+Started: 2025-08-30 23:55:15
+Results file: "results.txt"
+Sample fraction: 1
+
+Found 1 runs with corruption to analyze
+=== Starting analysis for Run 248 ===
+Checking 17 subruns out of 18 total (100.0% sample)
+Checking Run 248, subrun 385... CORRUPTED at event 2/2 (CR07=0x1ab6bf, CR08=0x1ab4bf)
+Checking Run 248, subrun 396... OK (4544 events checked)
+Checking Run 248, subrun 397... CORRUPTED at event 2360/2360 (CR07=0x1b8edd, CR08=0x1b8cdd)
+Checking Run 248, subrun 398... CORRUPTED at event 3064/3064 (CR07=0x1ba35b, CR08=0x1ba15b)
+Checking Run 248, subrun 399... CORRUPTED at event 2/2 (CR07=0x1ba923, CR08=0x1ba723)
+Checking Run 248, subrun 400... CORRUPTED at event 2/2 (CR07=0x1bc2e1, CR08=0x1bbee1)
+Checking Run 248, subrun 496... CORRUPTED at event 2/2 (CR07=0x228c21, CR08=0x228a21)
+Checking Run 248, subrun 593... OK (4544 events checked)
+Checking Run 248, subrun 594... OK (4544 events checked)
+Checking Run 248, subrun 595... OK (4544 events checked)
+Checking Run 248, subrun 596... OK (4544 events checked)
+Checking Run 248, subrun 597... OK (4544 events checked)
+Checking Run 248, subrun 598... OK (4544 events checked)
+Checking Run 248, subrun 599... CORRUPTED at event 1822/1822 (CR07=0x298caf, CR08=0x298aaf)
+Checking Run 248, subrun 600... CORRUPTED at event 245/245 (CR07=0x299844, CR08=0x299644)
+Checking Run 248, subrun 601... CORRUPTED at event 2/2 (CR07=0x29a90f, CR08=0x29a70f)
+Checking Run 248, subrun 602... CORRUPTED at event 2/2 (CR07=0x29becd, CR08=0x29b8cd)
+=== Run 248 Summary ===
+Corrupted subruns found: 10 out of 17 checked
+Estimated corruption percentage: 1.66%
+
+=== Analysis Complete ===
+Finished: 2025-08-30 23:55:18

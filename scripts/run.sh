@@ -17,13 +17,14 @@ show_help() {
     echo "               Usage: ./run.sh inspect <file_path>"
     echo
     echo "  run          Inspect all subruns for a specific run"
-    echo "               Usage: ./run.sh run <base_directory> <run_number>"
+    echo "               Usage: ./run.sh run <base_directory> <run_number> [start_subrun]"
     echo
     echo "  analyze      Run the corruption analyzer (event-based estimates)"
     echo "               Usage: ./run.sh analyze <results.txt_path>"
     echo
     echo "  subruns      Run the subrun corruption density analyzer"
-    echo "               Usage: ./run.sh subruns <results.txt_path>"
+    echo "               Usage: ./run.sh subruns <results.txt_path> [sample_fraction]"
+    echo "               sample_fraction: 0.0-1.0 (default 1.0 = check all)"
     echo
     echo "  -h, --help   Display this help message"
     echo
@@ -31,8 +32,10 @@ show_help() {
     echo "  ./run.sh desync /path/to/data"
     echo "  ./run.sh inspect /path/to/run12345_00001.mid.lz4"
     echo "  ./run.sh run /path/to/data 12345"
+    echo "  ./run.sh run /path/to/data 248 600"
     echo "  ./run.sh analyze scripts/results.txt"
     echo "  ./run.sh subruns scripts/results.txt"
+    echo "  ./run.sh subruns scripts/results.txt 0.1"
 }
 
 # Check if at least one argument is provided
@@ -85,6 +88,7 @@ case "$MODE" in
         EXEC="$BASE_DIR/build/bin/inspect_run"
         if [ ! -f "$EXEC" ]; then
             echo "[ERROR] Run inspector executable not found at $EXEC"
+            echo "        Run ./build.sh first"
             exit 1
         fi
         
@@ -129,14 +133,20 @@ case "$MODE" in
             exit 1
         fi
         
-        if [ $# -ne 1 ]; then
-            echo "[ERROR] Subruns mode requires exactly 1 argument: <results.txt_path>"
-            echo "Usage: ./run.sh subruns <results.txt_path>"
+        if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+            echo "[ERROR] Subruns mode requires 1 or 2 arguments: <results.txt_path> [sample_fraction]"
+            echo "Usage: ./run.sh subruns <results.txt_path> [sample_fraction]"
+            echo "       sample_fraction: 0.0-1.0 (default 1.0 = check all)"
             exit 1
         fi
         
         echo "[run.sh, INFO] Running analyze_subruns with:"
         echo "               Results file: $1"
+        if [ $# -eq 2 ]; then
+            echo "               Sample fraction: $2"
+        else
+            echo "               Sample fraction: 1.0 (default - check all)"
+        fi
         ;;
         
     -h|--help)
