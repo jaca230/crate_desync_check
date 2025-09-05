@@ -19,6 +19,9 @@ show_help() {
     echo "  run          Inspect all subruns for a specific run"
     echo "               Usage: ./run.sh run <base_directory> <run_number> [start_subrun]"
     echo
+    echo "  check        Check CC banks (CR07/CR08) for a specific run"
+    echo "               Usage: ./run.sh check <base_path> <run_number>"
+    echo
     echo "  analyze      Run the corruption analyzer (event-based estimates)"
     echo "               Usage: ./run.sh analyze <results.txt_path>"
     echo
@@ -33,6 +36,7 @@ show_help() {
     echo "  ./run.sh inspect /path/to/run12345_00001.mid.lz4"
     echo "  ./run.sh run /path/to/data 12345"
     echo "  ./run.sh run /path/to/data 248 600"
+    echo "  ./run.sh check ../midas_files 322"
     echo "  ./run.sh analyze scripts/results.txt"
     echo "  ./run.sh subruns scripts/results.txt"
     echo "  ./run.sh subruns scripts/results.txt 0.1"
@@ -104,6 +108,25 @@ case "$MODE" in
         if [ $# -eq 3 ]; then
             echo "               Starting subrun: $3"
         fi
+        ;;
+        
+    check|check_cc|check_cc_banks)
+        EXEC="$BASE_DIR/build/bin/check_cc_banks"
+        if [ ! -f "$EXEC" ]; then
+            echo "[ERROR] CC banks checker executable not found at $EXEC"
+            echo "        Run ./build.sh first"
+            exit 1
+        fi
+        
+        if [ $# -ne 2 ]; then
+            echo "[ERROR] Check mode requires exactly 2 arguments: <base_path> <run_number>"
+            echo "Usage: ./run.sh check <base_path> <run_number>"
+            exit 1
+        fi
+        
+        echo "[run.sh, INFO] Running check_cc_banks with:"
+        echo "               Base path: $1"
+        echo "               Run number: $2"
         ;;
         
     analyze|analyzer)

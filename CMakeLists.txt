@@ -123,8 +123,27 @@ target_compile_definitions(analyze_subruns PRIVATE
     -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
 )
 
+# ----------------------- CC Bank Checker -------------------------
+add_executable(check_cc_banks src/check_cc_banks.cpp)
+
+target_include_directories(check_cc_banks PRIVATE
+    ${MIDAS_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(check_cc_banks PRIVATE
+    ${MIDAS_LIBS}
+    ${ZLIB_LIBRARIES}
+)
+
+target_compile_definitions(check_cc_banks PRIVATE
+    -DWD2_DONT_INCLUDE_REG_ACCESS_VARS
+    -DDCB_DONT_INCLUDE_REG_ACCESS_VARS
+)
+
 # ----------------------- Output Directories ----------------------
-set_target_properties(desync_checker analyze_results analyze_subruns inspect_file inspect_run PROPERTIES
+set_target_properties(desync_checker analyze_results analyze_subruns inspect_file inspect_run check_cc_banks PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
